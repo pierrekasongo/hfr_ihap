@@ -1,0 +1,214 @@
+<%- include('header.ejs') %>                  
+                    
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+                        <div >
+                                <div>
+                                    
+                                    <!-- START TABLE BLOCK -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title-box">
+                                                <h3>Localisation</h3>
+                                                <span>Localisation des sites</span>
+                                            </div>                                     
+                                            
+                                        </div>
+                                        <div class="panel-body">
+                                            <a href="#" onclick="toggleTable()"><span id="toggleText">Masquer le tableau</span></a>                                 
+                                            <div id="table-container" class="row stacked">
+                                                <div class="col-md-4">                                            
+                                                    <!-- HERE WE DISPLAY THE MAP-->
+                                                    <div class="panel-body panel-body-map">
+                                                        <!--<div style="width: 130em; height: 400px; border: 1px solid #AAA;">-->
+                                                            <div id="table-div">
+                                                                    <table  class="table datatable" width="1200px">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Province</th>
+                                                                                    <th>Zone de santé</th>
+                                                                                    <th>Facility Code</th>
+                                                                                    <th>Structure</th>
+                                                                                    <% if (username) { %> 
+                                                                                        <th></th>
+                                                                                    <% } %> 
+                                                                                   
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% districts.forEach(function(dist){ %>
+                                                                                    <tr>
+                                                                                        <td><%= dist.province %></td>
+                                                                                        <td><a href="#" onclick="loadDetails('<%= dist.fa_code %>')"><%= dist.zone %></a></td>
+                                                                                        <td><a href="#" onclick="loadDetails('<%= dist.fa_code %>')"><%= dist.facility %></a></td>
+                                                                                        <td><%= dist.fa_code %></td>
+                                                                                        <% if (username) { %> 
+                                                                                            <td>
+                                                                                                <button class="btn btn-info" onclick="makeEditable('<%= dist.fa_code %>')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                                                            </td>
+                                                                                        <% } %> 
+                                                                                    </tr>
+                                                                                <% }) %> 
+                                                                            </tbody>
+                                                                    </table>
+                                                            </div>
+                                                            
+                                                            <div id="map-div">
+                                                                <div  id="map" style="width: 130em; height: 400px;"></div>
+                                                            </div>    
+                                                               
+                                                        <!--</div>-->
+                                                    </div>
+                                                </div>
+                                                 <!--<div class="col-md-8">
+                                                    <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                                </div>-->
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <!-- END TABLE BLOCK -->
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                    
+                    <!-- START WIDGETS -->                    
+                    <div class="row">
+                        <!-- TABS WIDGET -->
+                        <div class="panel panel-default tabs">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active"><a href="#tab1" data-toggle="tab" style="color:darkgreen;font-weight: bold;">INFORMATION DE LA STRUCTURE</a></li>
+                                    <li><a href="#tab2" data-toggle="tab" style="color:darkgreen;font-weight: bold;">CONTACTS</a></li>
+                                    <li><a href="#tab3" data-toggle="tab" style="color:darkgreen;font-weight: bold;">SERVICES OFFERTS</a></li>
+                                </ul>
+                                <div class="panel-body tab-content">
+                                    <div class="tab-pane active" id="tab1">
+                                        <!-- INFORMATION DE BASE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Information de base</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom">
+                                                        <li class="list-group-item">Province: <b><span id="province"></span></b></li>
+                                                        <li class="list-group-item">Zone de santé: <b><span id="zone"></span></b></li>
+                                                        <li class="list-group-item">Adresse: <b><span id="adresse"></span></b></li>
+                                                        <li class="list-group-item">Procédures pour obternir les soins et services VIH:
+                                                             <b><span id="procedure_soin"></span></b>
+                                                        </li>
+                                                        <li class="list-group-item">Type de staffs qui offrent les services:
+                                                            <a href="#">
+                                                                <b><span id="type_staff"></span></b>
+                                                            </a> 
+                                                        </li>
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- HORAIRE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Horaire de travail</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom" id="horaire">
+                                                    
+                                                </ul>                                
+                                            </div>
+                                        </div>
+                                        <!-- END HORAIRE LIST GROUP -->
+
+                                    <!-- END HEURE DE FONCTIONNEMENT LIST GROUP -->
+                                    </div>
+                                    <div class="tab-pane" id="tab2">
+                                        <!-- RESPONSABLE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Responsable</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom">
+                                                        <li class="list-group-item">Noms: <b><span id="resp_nom"></span></b></li>
+                                                        <li class="list-group-item">Fonction: <b><span id="resp_fonction"></span></b></li>
+                                                        <li class="list-group-item">Téléphone: <b><span id="resp_phone"></span></b></li>
+                            
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- END RESPONSABLE LIST GROUP -->
+                                        <!-- RESPONSABLE ADJOINT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Responsable Adjoint</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                        <li class="list-group-item">Noms: <b><span id="resp_ad_nom"></span></b></li>
+                                                        <li class="list-group-item">Fonction: <b><span id="resp_ad_fonction"></span></b></li>
+                                                        <li class="list-group-item">Téléphone: <b><span id="resp_ad_phone"></span></b></li>
+                                                </ul>                                
+                                            </div>
+                                        </div>
+                                        <!-- END RESPONSABLE ADJOINT LIST GROUP -->
+                                        <!-- PERSONNE CONTACT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Personne contact</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                    <li class="list-group-item">Noms: <b><span id="pers_nom"></span></b></li>
+                                                    <li class="list-group-item">Fonction: <b><span id="pers_fonction"></span></b></li>
+                                                    <li class="list-group-item">Téléphone: <b><span id="pers_phone"></span></b></li>
+                                                </ul>                                
+                                            </div>
+                                    </div>
+                                    <!-- END PERSONNE CONTACT LIST GROUP -->
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <!-- PERSONNE CONTACT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Services offerts</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom" id="service">
+                                                    
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- END PERSONNE CONTACT LIST GROUP -->
+                                    </div>                        
+                                </div>
+                            </div>                        
+                            <!-- END TABS WIDGET -->
+                    </div>
+                    <!-- END WIDGETS -->                    
+                    
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->                                
+            </div>            
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+        
+        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>        
+        
+        <script type="text/javascript" src="js/plugins.js"></script>        
+        <script type="text/javascript" src="js/actions.js"></script>
+
+        <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.js"></script> 
+
+        <script type='text/javascript' src='maps/hk.js'></script>
+        <script type='text/javascript' src='maps/llb.js'></script>
+        <script type='text/javascript' src='maps/drc.js'></script>
+        <script type='text/javascript' src='maps/script.js'></script>
+        <script type='text/javascript' src='maps/editValues.js'></script>      
+    </body>
+</html>
+
+
+
+
+

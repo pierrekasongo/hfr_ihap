@@ -1,0 +1,73 @@
+<%- include('header.ejs') %> 
+                <div class="page-content-wrap">
+
+                        <div >
+                                <div>
+                                    
+                                    <!-- START TABLE BLOCK -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title-box">
+                                                <h3>Synchronisation</h3>
+                                                <span>Synchronisation avec DHIS2</span>
+                                            </div>                                     
+                                            
+                                        </div>
+                                        <div class="panel-body">
+                                                                            
+                                            <div id="table-container" class="row stacked">
+                                                <div class="col-md-4">                                            
+                                                    <!-- HERE WE DISPLAY THE MAP-->
+                                                    <div class="panel-body panel-body-map">
+                                                        <table>
+                                                            <tr>
+                                                                <td><b>Dernière synchronisation: </b></td>
+                                                                <td> <%= sync[0].sync_date %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-top: 10px;">
+                                                                    <button class="btn btn-info" onclick="sync()"> Lancer la synchronisation</button>
+                                                                    
+                                                                </td>
+                                                                <td style="padding-left:5px;padding-top:10px;" >
+                                                                    <span id="sync_process" style="color:darkgreen;font-weight: bold;visibility:hidden;">
+                                                                        Sychronisation en cours...
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                 <!--<div class="col-md-8">
+                                                    <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                                </div>-->
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <!-- END TABLE BLOCK -->
+                                    
+                                </div>
+ 
+                            </div>
+                    
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->                                
+            </div>            
+            <!-- END PAGE CONTENT -->
+        </div>
+        
+        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>        
+        
+        <script type="text/javascript" src="js/plugins.js"></script>        
+        <script type="text/javascript" src="js/actions.js"></script>
+
+        <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.js"></script> 
+        <script type='text/javascript' src='maps/script-others.js'></script>      
+    </body>
+</html>
+
+
+
+
+

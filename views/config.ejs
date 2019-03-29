@@ -1,0 +1,106 @@
+<%- include('header.ejs') %> 
+                
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+
+                        <div >
+                                <div>
+                                    
+                                    <!-- START TABLE BLOCK -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title-box">
+                                                <h3>Configuration</h3>
+                                                <span>Configuration des valeurs par défaut</span>
+                                            </div>                                     
+                                            
+                                        </div>
+                                        <div class="panel-body">
+                                                                            
+                                            <div id="table-container" class="row stacked">
+                                                <div class="col-md-4">                                            
+                                                    <!-- HERE WE DISPLAY THE MAP-->
+                                                    <div class="panel-body panel-body-map">
+                                                        <!--<div style="width: 130em; height: 400px; border: 1px solid #AAA;">-->
+                                                            <form method="POST"></form>
+                                                                <table  class="table datatable" width="1200px">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Paramétre</th>
+                                                                                    <th>Valeur</th>
+                                                                                    <th></th>
+                                                                                   
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% configs.forEach(function(conf){ %>
+                                                                                    <tr>
+                                                                                        <td id="editable_param_<%= conf.id %>"><%= conf.param %></td>
+                                                                                        <td id="editable_<%= conf.id %>"><%= conf.value %></td>
+                                                                                        <td>
+                                                                                            <button class="btn btn-info" id="edit_<%= conf.id %>" onclick="makeEditable('<%= conf.id %>')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                                                            <button class="btn btn-success"id="save_<%= conf.id %>" onclick="saveEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-save"></span> Enregistrer</button>
+                                                                                            <button class="btn btn-warning" id="cancel_<%= conf.id %>" onclick="cancelEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-edit"></span> Annuler</button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                <% }) %> 
+                                                                            </tbody>
+                                                                </table>
+                                                            </form>
+
+                                                    </div>
+                                                </div>
+                                                 <!--<div class="col-md-8">
+                                                    <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                                </div>-->
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <!-- END TABLE BLOCK -->
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                    
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->                                
+            </div>            
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+
+        <!-- MESSAGE BOX-->
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>                    
+                        <p>Press No if youwant to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="pages-login.html" class="btn btn-success btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>        
+        
+        <script type="text/javascript" src="js/plugins.js"></script>        
+        <script type="text/javascript" src="js/actions.js"></script>
+
+        <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.js"></script> 
+        <script type='text/javascript' src='maps/script-others.js'></script>      
+    </body>
+</html>
+
+
+
+
+

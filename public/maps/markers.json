@@ -1,0 +1,14 @@
+markers = [
+   {
+     "name": "HGR Bunkeya",
+     "url": "https://en.wikipedia.org/wiki/Canada",
+     "lat": 10.38955556,
+     "lng": 26.93305556
+   },
+   {
+     "name": "CS Kikobe",
+     "url": "https://en.wikipedia.org/wiki/Anguilla",
+     "lat": 10.47627778,
+     "lng": 26.93250000
+   }
+];

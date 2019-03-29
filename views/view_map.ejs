@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>        
+        <!-- META SECTION -->
+        <title>FHR-iHAP</title>            
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <!-- END META SECTION -->
+        
+        <!-- CSS INCLUDE -->        
+        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+        <!-- EOF CSS INCLUDE -->  
+        <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+        <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>                                  
+    </head>
+    <body>
+        <!-- START PAGE CONTAINER -->
+        <div class="page-container">
+            
+            <!-- START PAGE SIDEBAR -->
+            <div class="page-sidebar">
+                <!-- START X-NAVIGATION -->
+                <ul class="x-navigation">
+                    <li class="xn-logo">
+                        <a href="index.html">FHR-iHAP</a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>
+                    <!--<li class="xn-profile">
+                        <a href="#" class="profile-mini">
+                            <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                        </a>
+                        <div class="profile">
+                            <div class="profile-image">
+                                <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name">John Doe</div>
+                                <div class="profile-data-title">Web Developer/Designer</div>
+                            </div>
+                            <div class="profile-controls">
+                                <a href="pages-profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
+                                <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
+                            </div>
+                        </div>                                                                        
+                    </li>-->
+                    <li class="xn-title">Unités organisationnelles</li>
+
+                    <% districts.forEach(function(dist){ %>
+
+                        <li class="xn-openable" id="<%= dist.fa_code %>">
+
+                            <a href="#" onclick="districtClicked('lvl2|<%= dist.fa_code %>')">
+                                <span class="fa fa-sitemap"></span>
+                                <span class="xn-text">
+                                    <%= dist.facility %>
+                                </span>
+                            </a>
+                            <!--<ul>                            
+                                <li class="xn-openable">
+                                    <a href="#">Zone de santé</a>
+                                    <ul>
+                                        <li class="xn-openable">
+                                            <a href="#">Structure</a>    
+                                        </li>
+                                    </ul>
+                                </li>                            
+                            </ul> -->
+                            
+                        </li>
+                    <% }) %> 
+
+                </ul>
+                <!-- END X-NAVIGATION -->
+            </div>
+            <!-- END PAGE SIDEBAR -->
+            
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+                
+                <!-- START X-NAVIGATION VERTICAL -->
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <!-- TOGGLE NAVIGATION -->
+                    <li class="xn-icon-button">
+                        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                    </li>
+                    <!-- END TOGGLE NAVIGATION -->
+                    <!-- SEARCH -->
+                    <li class="xn-search">
+                        <form role="form">
+                            <input type="text" name="search" placeholder="Rechercher structure..."/>
+                        </form>
+                    </li>   
+                    <!-- END SEARCH -->
+                    <!-- SIGN OUT -->
+                    <li class="xn-icon-button pull-right">
+                        <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>                        
+                    </li> 
+                    <!-- END SIGN OUT -->
+                    
+                    
+                </ul>
+                <!-- END X-NAVIGATION VERTICAL -->                     
+                    
+                
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+
+                        <div >
+                                <div>
+                                    
+                                    <!-- START SALES BLOCK -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title-box">
+                                                <h3>Localisation</h3>
+                                                <span>Localisation des sites</span>
+                                            </div>                                     
+                                            <ul class="panel-controls panel-controls-title">                                        
+                                                <li>
+                                                    <div id="reportrange" class="dtrange">                                            
+                                                        <span></span><b class="caret"></b>
+                                                    </div>                                     
+                                                </li>                                
+                                                <li><a href="#" class="panel-fullscreen rounded"><span class="fa fa-expand"></span></a></li>
+                                            </ul>                                    
+                                            
+                                        </div>
+                                        <div class="panel-body">                                    
+                                            <div class="row stacked">
+                                                <div class="col-md-4">                                            
+                                                    <!-- HERE WE DISPLAY THE MAP-->
+                                                    <div class="panel-body panel-body-map">
+                                                        <div  id="map" style="width: 130em; height: 400px; border: 1px solid #AAA;"></div>
+                                                    </div>
+                                                </div>
+                                                <!--<div class="col-md-8">
+                                                    <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                                </div>-->
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <!-- END SALES BLOCK -->
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                    
+                    <!-- START WIDGETS -->                    
+                    <div class="row">
+                        <!-- TABS WIDGET -->
+                        <div class="panel panel-default tabs">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active"><a href="#tab1" data-toggle="tab">INFORMATION DE LA STRUCTURE</a></li>
+                                    <li><a href="#tab2" data-toggle="tab">CONTACTS</a></li>
+                                    <li><a href="#tab3" data-toggle="tab">SERVICES OFFERTS</a></li>
+                                </ul>
+                                <div class="panel-body tab-content">
+                                    <div class="tab-pane active" id="tab1">
+                                        <!-- INFORMATION DE BASE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Information de base</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom">
+                                                        <li class="list-group-item">Province:</li>
+                                                        <li class="list-group-item">Zone de santé:</li>
+                                                        <li class="list-group-item">Adresse:</li>
+                                                        <li class="list-group-item">Procédures pour obternir les soins et services VIH:</li>
+                                                        <li class="list-group-item">Type de staffs qui offrent les services:</li>
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- HORAIRE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Horaire de travail</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                    
+                                                </ul>                                
+                                            </div>
+                                        </div>
+                                        <!-- END HORAIRE LIST GROUP -->
+
+                                        <!-- HEURE DE FONCTIONNEMENT  LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Information de base</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                    <li class="list-group-item">Province:</li>
+                                                    <li class="list-group-item">Zone de santé:</li>
+                                                    <li class="list-group-item">Adresse:</li>
+                                                   
+                                                </ul>                                
+                                            </div>
+                                    </div>
+                                    <!-- END HEURE DE FONCTIONNEMENT LIST GROUP -->
+                                    </div>
+                                    <div class="tab-pane" id="tab2">
+                                        <!-- RESPONSABLE LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Responsable</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom">
+                                                        <li class="list-group-item">Noms:</li>
+                                                        <li class="list-group-item">Fonction:</li>
+                                                        <li class="list-group-item">Téléphone:</li>
+                            
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- END RESPONSABLE LIST GROUP -->
+                                        <!-- RESPONSABLE ADJOINT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Responsable Adjoint</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                    <li class="list-group-item">Noms:</li>
+                                                    <li class="list-group-item">Fonction:</li>
+                                                    <li class="list-group-item">Téléphone:</li>
+                
+                                                </ul>                                
+                                            </div>
+                                        </div>
+                                        <!-- END RESPONSABLE ADJOINT LIST GROUP -->
+                                        <!-- PERSONNE CONTACT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><b>Personne contact</b></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-group border-bottom">
+                                                    <li class="list-group-item">Noms:</li>
+                                                    <li class="list-group-item">Fonction:</li>
+                                                    <li class="list-group-item">Téléphone:</li>
+                                                </ul>                                
+                                            </div>
+                                    </div>
+                                    <!-- END PERSONNE CONTACT LIST GROUP -->
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <!-- PERSONNE CONTACT LIST GROUP -->
+                                        <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"><b>Services offerts</b></h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul class="list-group border-bottom">
+                                                        
+                                                    </ul>                                
+                                                </div>
+                                        </div>
+                                        <!-- END PERSONNE CONTACT LIST GROUP -->
+                                    </div>                        
+                                </div>
+                            </div>                        
+                            <!-- END TABS WIDGET -->
+                    </div>
+                    <!-- END WIDGETS -->                    
+                    
+                    
+                    
+                    <!-- START DASHBOARD CHART -->
+					<div class="chart-holder" id="dashboard-area-1" style="height: 200px;"></div>
+					<div class="block-full-width">
+                                                                       
+                    </div>                    
+                    <!-- END DASHBOARD CHART -->
+                    
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->                                
+            </div>            
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+
+        <!-- MESSAGE BOX-->
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>                    
+                        <p>Press No if youwant to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="pages-login.html" class="btn btn-success btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MESSAGE BOX-->
+
+       
+    <!-- START SCRIPTS -->
+        <!-- START PLUGINS 
+        <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>-->
+        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>        
+        <!-- END PLUGINS -->
+
+
+        <!-- START TEMPLATE
+        <script type="text/javascript" src="js/settings.js"></script> -->
+        
+        <script type="text/javascript" src="js/plugins.js"></script>        
+        <script type="text/javascript" src="js/actions.js"></script>
+       
+
+
+        <script type='text/javascript' src='maps/hk.js'></script>
+        <script type='text/javascript' src='maps/llb.js'></script>
+        <script type='text/javascript' src='maps/drc.js'></script>
+        <!-- <script type='text/javascript' src='maps/markers.json'></script>-->
+        <script type='text/javascript' src='maps/map-script.js'></script>
+       
+        <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->         
+    </body>
+</html>
+
+
+
+
+

@@ -1,7 +1,26 @@
 
 
 //CONFIGURATION PAGE
+var cancelAllEditable = () => {
+
+  $("input").each(function( index, value ) {
+
+    var idx=$(this).attr('id');
+
+    if(idx){
+
+      var idName=idx.split("_");
+
+      var id=idName[2];
+
+      cancelEdition(id);
+    }
+  });
+}
+
 var makeEditable = (id) =>{
+
+  cancelAllEditable();
 
   $('#edit_'+id).hide();
 

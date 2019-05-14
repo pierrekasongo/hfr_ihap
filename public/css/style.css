@@ -1,0 +1,62 @@
+.district-select{
+  display: flex;
+  padding:5px;
+}
+.dist-btn{
+  background: #1caf9a;
+  color:#fff;
+  font-weight: bold;
+  border:1px solid #1caf9a;
+  border-radius: 3px 3px 3px 3px;
+  padding:3px;
+  margin:3px;
+}
+/*.dist-btn:link{
+  background:#55ecd6;
+  text-decoration: none;
+  color:orange;
+}*/
+.active, .dist-btn:hover
+{
+  background:#55ecd6;
+  text-decoration: none;
+  color:orange;
+}
+
+.demography{
+  overflow: auto;
+}
+.demography p{
+  font-family: "Times New Roman", Times, serif;
+  text-align: justify;
+  color:#6eabfa;
+}
+
+.demography li{
+  color:#6eabfa;
+}
+.demography h4{
+  color:#1caf9a;
+  font-weight: bold;
+}
+.demography h5{
+  color:#1caf9a;
+}
+
+.div-synthese{
+  background: #1caf9a;
+  border-radius:5px 5px 0px 0px;
+  margin-top:5px;
+  margin-bottom:5px;
+  padding:5px;
+}
+.div-synthese span{
+  color:#fff;
+  font-weight: bold;
+}
+.zone-count{
+  color:brown;
+  margin-left:5px;
+  font-weight: bold;
+}
+

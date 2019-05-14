@@ -2,7 +2,7 @@
 <html lang="en">
     <head>        
         <!-- META SECTION -->
-        <title>FHR-iHAP</title>            
+        <title>MFL-iHAP</title>            
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,6 +12,8 @@
         
         <!-- CSS INCLUDE -->        
         <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+
+        <link rel="stylesheet" type="text/css" id="theme" href="css/style.css"/>
         <!-- EOF CSS INCLUDE -->  
         <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 
@@ -27,14 +29,26 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="/">FHR-IHAP HK/L</a>
+                        <a href="/">MFL-IHAP HK/L</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
     
-                    <li>   
-                        <a href="/">
-                            <i class="fa fa-caret-right"></i><span class="xn-text">Réinitialiser la carte</span>
-                        </a>
+                    <li>
+                        <% if(path !== '/'){ %>
+                            <a href="/">
+                                <i class="fa fa-caret-right"></i><span class="xn-text">Acceuil</span>
+                            </a>  
+                        <% } %>
+                        <% if(path !== 'map'){ %>
+                            <a href="/map">
+                                <i class="fa fa-caret-right"></i><span class="xn-text">Carte dynamique</span>
+                            </a>  
+                        <% } %>
+                        <% if(path == 'map'){ %>
+                            <a href="/map">
+                                <i class="fa fa-caret-right"></i><span class="xn-text">Réinitialiser la carte</span>
+                            </a>
+                        <% } %>
                         <% if (username) { %> 
                             <a href="/sync">
                                 <i class="fa fa-caret-right"></i><span class="xn-text">Synchronisation</span>

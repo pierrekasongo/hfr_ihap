@@ -5,11 +5,11 @@ var session=require('express-session');
 
 var db=require('./dbconn');
 
-const DHIS2_URL = 'http://localhost:8080/api/sqlViews/UArf3DEsGm7/data.json?paging=false';
+const DHIS2_URL = 'http://vps428218.ovh.net:8080/api/';//'http://localhost:8080/api/';
 
-const USER = 'admin';
+const USER = 'Pierre';//'admin';
 
-const PASSWORD = 'district';
+const PASSWORD = 'Capuccino@8891';//'district';
 
 var getParamValue = (param) => {
 
@@ -31,25 +31,106 @@ router.get('/form/:facilityCode',function(req,res,next){
 
   res.render('form');
 })
-/* GET home page. */
 router.get('/', function(req, res, next) {
 
-  /*sql="SELECT fd.type_institution as type,fd.procedure_soin as proc_soin, pr.name as province,zs.name as zone,fa.code as fa_code,fa.name as facility"+
-  " FROM province pr, zone_sante zs, facility fa, facility_details fd WHERE fa.code_zone=zs.code"+
-  " AND zs.code_province=pr.code AND fa.code=fd.code_facility";*/
-  sql="SELECT pr.name as province,zs.name as zone,fa.code as fa_code,fa.name as facility"+
-  " FROM province pr, zone_sante zs, facility fa WHERE fa.code_zone=zs.code "+
-  " AND zs.code_province=pr.code";
+  sql="SELECT * FROM province";
+  db.query(sql,function(error,data){
+    if(error)throw error;
+    res.render('index',{
+      districts:data,
+      username:req.session.user,
+      path:'/'
+    });
+  });
+});
+    
+router.get('/geolocateAll', function(req,res,next){
 
+  let sql="SELECT fa.code as code, fa.id as id, name as facility, type_institution as type, procedure_soin as proc_soin,"+
+          "type_staff as staff, latitude,longitude FROM facility_details fd,"+
+          "facility fa WHERE fa.code=fd.code_facility)";
+
+  db.query(sql,function(error,data){
+    
+    if(error)throw error;
+    let resData=data;
+    res.json(resData);
+  })
+});
+router.get('/map', function(req, res, next) {
+
+  /*sql="SELECT pr.name as province,zs.name as zone,fa.code as fa_code,fa.name as facility"+
+  " FROM province pr, zone_sante zs, facility fa WHERE fa.code_zone=zs.code "+
+  " AND zs.code_province=pr.code";*/
+  let sql="SELECT code,name as facility FROM facility";
 
     db.query(sql,function(error,data){                                                                                                                                                                                                                
       if(error)throw error;
-      res.render('index', 
-      { 
-        districts: data,
-        username:req.session.user
-      }
-    );
+      res.render('map', 
+        { 
+          facilities: data,
+          username:req.session.user,
+          path:'map'
+        }
+      );
+    })
+});
+
+router.get('/filterFacilitiesByZone/:healthZoneID', function(req, res, next) {
+
+  let healthZoneID=req.params.healthZoneID;
+
+  sql="SELECT code, name as facility FROM facility  WHERE code_zone='"+healthZoneID+"'";
+
+    db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+      let resData=data;
+      res.json(resData);
+    })
+});
+
+router.get('/filterFacilitiesByDistrict/:districtID', function(req, res, next) {
+
+  let districtID=req.params.districtID;
+
+  let sql="SELECT code,name as facility FROM facility";
+
+  if(districtID > 0){
+    sql="SELECT code, name as facility FROM facility "+
+      "WHERE code_zone IN (SELECT zs.code FROM zone_sante zs, province pr WHERE pr.code=zs.code_province AND pr.id="+districtID+")";
+  }
+
+  db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+      let resData=data;
+      res.json(resData);
+    })
+});
+
+router.get('/loadHealthZones/:districtID', function(req, res, next) {
+
+  let districtID=req.params.districtID;
+
+  let sql="SELECT code, name FROM zone_sante";
+
+  if(districtID > 0){
+
+    sql="SELECT code, name FROM zone_sante WHERE code_province=(SELECT code FROM province WHERE id="+districtID+")";
+  }
+  db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+      let resData=data;
+      res.json(resData);
+    })
+});
+
+router.get('/loadDistricts', function(req, res, next) {
+
+  sql="SELECT id, code, name FROM province";
+    db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+      let resData=data;
+      res.json(resData);
     })
 });
 
@@ -67,9 +148,42 @@ router.post('/updateConfig', function(req, res, next) {
 
       db.query(sql,function(error,data){                                                                                                                                                                                                                
         if(error)throw error;
-        res.render('config', { configs: data });
+        res.render('config', { 
+          configs: data,
+          path:'config'
+        });
       })
     })
+});
+
+router.post('/updateContact', function(req, res, next) {
+
+  let contactID=req.body.contactID;
+  let type=req.body.type;
+  let nom=req.body.nom;
+  let fonction=req.body.fonction;
+  let telephone=req.body.telephone;
+
+  sql=`UPDATE contact SET noms="${nom}",fonction="${fonction}", telephone="${telephone}", type="${type}" WHERE id=${contactID}`;
+
+  db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+  })
+});
+
+router.post('/updateInfoBase', function(req, res, next) {
+
+  let fosaCode=req.body.fosa;
+  let adresse=req.body.adresse;
+  let procedure=req.body.procedure;
+  let type_staff=req.body.type_staff;
+
+  sql=`UPDATE facility_details SET adresse="${adresse}",
+      procedure_soin="${procedure}",type_staff="${type_staff}" WHERE code_facility="${fosaCode}"`;
+  
+  db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+  })
 });
 
 router.get('/config',  (req, res, next) => {
@@ -80,7 +194,8 @@ router.get('/config',  (req, res, next) => {
       if(error)throw error;
       res.render('config', {
         configs: data,
-        username:req.session.user
+        username:req.session.user,
+        path:'config'
       });
     })
 });
@@ -137,7 +252,8 @@ router.get('/user', function(req, res, next) {
       if(error)throw error;
       res.render('user', {
          users: data,
-         username:req.session.user
+         username:req.session.user,
+         path:'user'
         });
     })
 });
@@ -164,7 +280,8 @@ router.get('/sync', function(req, res, next) {
 
       res.render('sync', {
         sync: data,
-        username:req.session.user
+        username:req.session.user,
+        path:'user'
       });
     })
 });
@@ -210,7 +327,7 @@ router.get('/getResponsable/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
-  let sql="SELECT noms,fonction, telephone, type FROM contact WHERE code_facility='"+fosaCode+"'";
+  let sql="SELECT id,noms,fonction, telephone, type FROM contact WHERE code_facility='"+fosaCode+"'";
 
   db.query(sql,function(error,data){
     
@@ -224,7 +341,7 @@ router.get('/getHoraire/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
-  let sql="SELECT jour,heure FROM horaire WHERE code_facility='"+fosaCode+"'";
+  let sql="SELECT id,jour,heure FROM horaire WHERE code_facility='"+fosaCode+"'";
 
   db.query(sql,function(error,data){
     
@@ -238,7 +355,7 @@ router.get('/getService/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
-  let sql="SELECT nom FROM service WHERE code_facility='"+fosaCode+"'";
+  let sql=`SELECT code_facility,nom FROM service WHERE code_facility="${fosaCode}"`;
 
   db.query(sql,function(error,data){
     
@@ -248,11 +365,14 @@ router.get('/getService/:fosaCode', function(req,res,next){
   })
 });
 
-router.get('/getService/:fosaCode', function(req,res,next){
+router.post('/updateServices', function(req,res,next){
 
-  let fosaCode=req.params.fosaCode;
+  let fosaCode = req.body.fosaCode;
 
-  let sql="SELECT nom FROM service WHERE code_facility='"+fosaCode+"'";
+  let services = req.body.services;
+
+  let sql=`INSERT INTO service (code_facility, nom) VALUES ("${fosaCode}","${services}") 
+           ON DUPLICATE KEY UPDATE nom = "${services}"`;
 
   db.query(sql,function(error,data){
     
@@ -262,11 +382,11 @@ router.get('/getService/:fosaCode', function(req,res,next){
   })
 });
 
-router.get('/geolocate/:fosaCode', function(req,res,next){
+router.get('/geolocateFacility/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
-  let sql="SELECT name as facility, type_institution as type, procedure_soin as proc_soin,"+
+  let sql="SELECT fa.code as code, fa.id as id, name as facility, type_institution as type, procedure_soin as proc_soin,"+
           "type_staff as staff, latitude,longitude FROM facility_details fd,"+
           "facility fa WHERE fa.code=fd.code_facility AND code_facility='"+fosaCode+"'";
 
@@ -278,6 +398,45 @@ router.get('/geolocate/:fosaCode', function(req,res,next){
   })
 });
 
+router.get('/geolocateByHealthZone/:hzCode', function(req,res,next){
+
+  let hzCode=req.params.hzCode;
+
+  let sql="SELECT fa.code as code, fa.id as id, name as facility, type_institution as type, procedure_soin as proc_soin,"+
+          "type_staff as staff, latitude,longitude FROM facility_details fd,"+
+          "facility fa WHERE fa.code=fd.code_facility AND fa.code_zone='"+hzCode+"'";
+
+  db.query(sql,function(error,data){
+    
+    if(error)throw error;
+    let resData=data;
+    res.json(resData);
+  })
+});
+
+router.get('/geolocateByDistrict/:districtID', function(req,res,next){
+
+  let districtID=req.params.districtID;
+
+  let sql="SELECT fa.code as code, fa.id as id, name as facility, type_institution as type, procedure_soin as proc_soin,"+
+          "type_staff as staff, latitude,longitude FROM facility_details fd,"+
+          "facility fa WHERE fa.code=fd.code_facility AND fa.code_zone IN (SELECT zs.code FROM zone_sante zs, province pr WHERE pr.code=zs.code_province AND pr.id="+districtID+")";
+
+  if(districtID == 0){
+    sql="SELECT fa.code as code, fa.id as id, name as facility, type_institution as type, procedure_soin as proc_soin,"+
+          "type_staff as staff, latitude,longitude FROM facility_details fd,"+
+          "facility fa WHERE fa.code=fd.code_facility";
+  }
+
+  db.query(sql,function(error,data){
+    
+    if(error)throw error;
+    let resData=data;
+    res.json(resData);
+  })
+});
+
+
 router.get('/loadData', function(req, res, next) {
 
   var username = USER;
@@ -286,7 +445,7 @@ router.get('/loadData', function(req, res, next) {
 
   var options = {
 
-    url: DHIS2_URL,
+    url: DHIS2_URL+'sqlViews/UArf3DEsGm7/data.json?paging=false',
 
     auth: {
 
@@ -378,7 +537,80 @@ router.get('/loadData', function(req, res, next) {
     });
    
   })
+});
 
+router.get('/getTX_CURR/:fosa_code', function(req, res, next) {
+
+  res.json({'cohorte':'0'});
+  return;
+
+  let org_unit=req.params.fosa_code;
+
+  let cohorte=0;
+
+  let username = USER;
+
+  let password = PASSWORD;
+
+  let currDate=new Date();
+
+  let year=currDate.getFullYear();
+
+  let month=currDate.getMonth()+1;
+
+  let pe=year+""+month;
+
+  //console.log(period);
+
+  let period="201810";
+
+  let dataset="vgbKdGif2Vj";
+
+  let dataElement="HSTM4lrJ08N";
+
+  let options = {
+
+    url: DHIS2_URL+'dataValueSets.json?dataSet='+dataset+'&period='+period+'&orgUnit='+org_unit,
+
+    auth: {
+
+      user: username,
+
+      password: password
+    }
+  };
+
+  request(options, function (err, res, body) {
+    if (err) {
+      error(err);
+      console.log("ERROR "+error);
+      //return;
+    }
+
+  }).then(function(data){
+
+    let datas;
+
+    if(data){
+
+      datas=JSON.parse(data);
+    }
+    if(datas['dataValues']){
+
+      datas['dataValues'].forEach(row => {
+
+        let de=row.dataElement;
+  
+        let dv=row.value;
+  
+        if(de == dataElement){
+  
+          cohorte+= parseInt(dv);
+        }
+      })
+      res.json(cohorte);
+    }
+  });
   
 });
 

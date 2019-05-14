@@ -1,5 +1,5 @@
 
-var makeEditable = (id) =>{
+var makeEditable = (id) => {
 
   $('#edit_'+id).hide();
 
@@ -14,7 +14,7 @@ var makeEditable = (id) =>{
   $('#cancel_'+id).show();
 }
 
-var cancelEdition = (id) =>{
+var cancelEdition = (id) => {
 
   $('#edit_'+id).show();
 

@@ -4,186 +4,79 @@
                 <div class="page-content-wrap">
                         <div >
                                 <div>
-                                    
                                     <!-- START TABLE BLOCK -->
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <div class="panel-title-box">
-                                                <h3>Localisation</h3>
-                                                <span>Localisation des sites</span>
+                                                <h3>Démographie</h3>
                                             </div>                                     
-                                            
                                         </div>
-                                        <div class="panel-body">
-                                            <a href="#" onclick="toggleTable()"><span id="toggleText">Masquer le tableau</span></a>                                 
+                                        <div class="panel-body">                              
                                             <div id="table-container" class="row stacked">
-                                                <div class="col-md-4">                                            
-                                                    <!-- HERE WE DISPLAY THE MAP-->
-                                                    <div class="panel-body panel-body-map">
-                                                        <!--<div style="width: 130em; height: 400px; border: 1px solid #AAA;">-->
-                                                            <div id="table-div">
-                                                                    <table  class="table datatable" width="1200px">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Province</th>
-                                                                                    <th>Zone de santé</th>
-                                                                                    <th>Facility Code</th>
-                                                                                    <th>Structure</th>
-                                                                                    <% if (username) { %> 
-                                                                                        <th></th>
-                                                                                    <% } %> 
-                                                                                   
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <% districts.forEach(function(dist){ %>
-                                                                                    <tr>
-                                                                                        <td><%= dist.province %></td>
-                                                                                        <td><a href="#" onclick="loadDetails('<%= dist.fa_code %>')"><%= dist.zone %></a></td>
-                                                                                        <td><a href="#" onclick="loadDetails('<%= dist.fa_code %>')"><%= dist.facility %></a></td>
-                                                                                        <td><%= dist.fa_code %></td>
-                                                                                        <% if (username) { %> 
-                                                                                            <td>
-                                                                                                <button class="btn btn-info" onclick="makeEditable('<%= dist.fa_code %>')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
-                                                                                            </td>
-                                                                                        <% } %> 
-                                                                                    </tr>
-                                                                                <% }) %> 
-                                                                            </tbody>
-                                                                    </table>
-                                                            </div>
+                                                    <div class="demography">
+                                                            <img src="img/rdc.png" width="700px" style="float:right;margin-left:10px;">
                                                             
-                                                            <div id="map-div">
-                                                                <div  id="map" style="width: 130em; height: 400px;"></div>
-                                                            </div>    
+                                                                <h4>Présentation du Pays </h4>
+
+                                                                <p>
+                                                                    La République Démocratique du Congo(RDC) est le deuxième plus vaste pays d'Afrique après l'Algérie. 
+                                                                    Il s'étend de l'océan Atlantique au plateau de l'Est et correspond à la majeure partie du bassin du fleuve Congo. 
+                                                                    Le Nord du pays est un des plus grands domaines de forêt équatoriale au monde, l’Est du pays borde le grand rift 
+                                                                    est-africain, domaine des montagnes, des collines, des Grands Lacs mais aussi des volcans. Le Sud et le centre, 
+                                                                    domaine des savanes arborées, forment un haut plateau riche en minerais. À l’extrême ouest, une quarantaine de 
+                                                                    kilomètres au nord de l'embouchure du fleuve Congo s’étale une côte sur l’océan Atlantique. Le pays partage ses 
+                                                                    frontières avec l’enclave de Cabinda (Angola) et la république du Congo à l’ouest, la République centrafricaine 
+                                                                    et le Soudan du Sud au nord, l’Ouganda, le Rwanda, le Burundi et la Tanzanie à l’est, la Zambie et l’Angola au sud5. 
+                                                                    La RDC est membre de l’Organisation internationale de la francophonie depuis 1977. <br>
+                                                                    L'article 2 de la constitution de 2005 de la république démocratique du Congo spécifie un découpage du pays en 26 
+                                                                    provinces, comprenant la ville-province de Kinshasa. Votée en février 2006, cette nouvelle organisation territoriale 
+                                                                    devait prendre effet dans les trois ans qui suivaient l’installation effective des institutions politiques prévues par 
+                                                                    la Constitution (article 226), c'est-à-dire en février 2009.
+                                                                </p>
+                                                                <h4>Informations clés </h4>
+                                                                <ul>
+                                                                    <li>Superficie: </li>
+                                                                    <li>Population: </li>
+                                                                    <li>Prévalence VIH: </li>
+                                                                </ul> 
+                                                                <br>
+                                                                <h4>Projet IHAP HK/L</h4>
+                                                                <p>
+                                                                    Le projet Integrated HIV/AIDS Program (IHAP) de <b>PEPFAR /USAID</b> est mis en œuvre par un consortium dirigé par <b>PATH</b>, 
+                                                                    avec <b>IntraHealth international</b> comme membre. Le projet soutien le Gouvernement Congolais dans la lutte contre le 
+                                                                    VIH/SIDA et la réalisation de la vision 95-95-95 du Programme commun des Nations Unies. Ce programme vise à assurer 
+                                                                    un contrôle durable de l’épidémie à l’horizon 2020, et de l’objectif mondial de génération sans SIDA d’ici 2030. 
+                                                                    Cet appui s’étend sur <b>159</b> structures sanitaires ou sites VIH, réparties dans <b>18</b> zones sanitaires (ZS) des provinces 
+                                                                    du <b>Haut Katanga</b> et de <b>Lualaba</b>. Le projet IHAP renforce les capacités des services VIH/SIDA afin d’assurer le continuum 
+                                                                    des soins de qualité au niveau des structures sanitaires et communautaires. Les équipes cadres des zones sanitaires (ECZS) 
+                                                                    sont assistées pour une coordination efficace de la lutte contre le VIH/SIDA. Ces sites VIH prennent en charge une file 
+                                                                    active de <b>30 964</b> patients (données de Septembre 2018), ce qui génère un nombre important de données à collecter, traiter 
+                                                                    et analyser pour des prises de décisions efficaces.
+                                                                </p>
+                                                                <% districts.forEach(function(dist){ %>
+                                                                    <% if(!dist.name.includes('Community')){ %>
+                                                                    <h5><%= dist.name %></h5>
+                                                                    <ul>
+                                                                        <li>Superficie: <b><%= dist.superficie %></b></li>
+                                                                        <li>Population: <b><%= dist.population %></b></li>
+                                                                        <li>Prévalence:  <b><%= dist.dist %></b></li>
+                                                                    </ul>
+                                                                    <% } %>
+                                                                <% }) %>
                                                                
-                                                        <!--</div>-->
-                                                    </div>
-                                                </div>
-                                                 <!--<div class="col-md-8">
-                                                    <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
-                                                </div>-->
-                                            </div>                                    
+                                                    </div>   
+                                            </div>
+                                            <div class="district-select">
+                                                    <div id="dist_list">
+                                                        <a href="/map">Voir la carte dynamique</a>
+                                                    </div>        
+                                            </div>                                   
                                         </div>
                                     </div>
                                     <!-- END TABLE BLOCK -->
                                     
                                 </div>
-                                
-                                
-                            </div>
-                    
-                    <!-- START WIDGETS -->                    
-                    <div class="row">
-                        <!-- TABS WIDGET -->
-                        <div class="panel panel-default tabs">
-                                <ul class="nav nav-tabs nav-justified">
-                                    <li class="active"><a href="#tab1" data-toggle="tab" style="color:darkgreen;font-weight: bold;">INFORMATION DE LA STRUCTURE</a></li>
-                                    <li><a href="#tab2" data-toggle="tab" style="color:darkgreen;font-weight: bold;">CONTACTS</a></li>
-                                    <li><a href="#tab3" data-toggle="tab" style="color:darkgreen;font-weight: bold;">SERVICES OFFERTS</a></li>
-                                </ul>
-                                <div class="panel-body tab-content">
-                                    <div class="tab-pane active" id="tab1">
-                                        <!-- INFORMATION DE BASE LIST GROUP -->
-                                        <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title"><b>Information de base</b></h3>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <ul class="list-group border-bottom">
-                                                        <li class="list-group-item">Province: <b><span id="province"></span></b></li>
-                                                        <li class="list-group-item">Zone de santé: <b><span id="zone"></span></b></li>
-                                                        <li class="list-group-item">Adresse: <b><span id="adresse"></span></b></li>
-                                                        <li class="list-group-item">Procédures pour obternir les soins et services VIH:
-                                                             <b><span id="procedure_soin"></span></b>
-                                                        </li>
-                                                        <li class="list-group-item">Type de staffs qui offrent les services:
-                                                            <a href="#">
-                                                                <b><span id="type_staff"></span></b>
-                                                            </a> 
-                                                        </li>
-                                                    </ul>                                
-                                                </div>
-                                        </div>
-                                        <!-- HORAIRE LIST GROUP -->
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><b>Horaire de travail</b></h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <ul class="list-group border-bottom" id="horaire">
-                                                    
-                                                </ul>                                
-                                            </div>
-                                        </div>
-                                        <!-- END HORAIRE LIST GROUP -->
-
-                                    <!-- END HEURE DE FONCTIONNEMENT LIST GROUP -->
-                                    </div>
-                                    <div class="tab-pane" id="tab2">
-                                        <!-- RESPONSABLE LIST GROUP -->
-                                        <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title"><b>Responsable</b></h3>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <ul class="list-group border-bottom">
-                                                        <li class="list-group-item">Noms: <b><span id="resp_nom"></span></b></li>
-                                                        <li class="list-group-item">Fonction: <b><span id="resp_fonction"></span></b></li>
-                                                        <li class="list-group-item">Téléphone: <b><span id="resp_phone"></span></b></li>
-                            
-                                                    </ul>                                
-                                                </div>
-                                        </div>
-                                        <!-- END RESPONSABLE LIST GROUP -->
-                                        <!-- RESPONSABLE ADJOINT LIST GROUP -->
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><b>Responsable Adjoint</b></h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <ul class="list-group border-bottom">
-                                                        <li class="list-group-item">Noms: <b><span id="resp_ad_nom"></span></b></li>
-                                                        <li class="list-group-item">Fonction: <b><span id="resp_ad_fonction"></span></b></li>
-                                                        <li class="list-group-item">Téléphone: <b><span id="resp_ad_phone"></span></b></li>
-                                                </ul>                                
-                                            </div>
-                                        </div>
-                                        <!-- END RESPONSABLE ADJOINT LIST GROUP -->
-                                        <!-- PERSONNE CONTACT LIST GROUP -->
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><b>Personne contact</b></h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <ul class="list-group border-bottom">
-                                                    <li class="list-group-item">Noms: <b><span id="pers_nom"></span></b></li>
-                                                    <li class="list-group-item">Fonction: <b><span id="pers_fonction"></span></b></li>
-                                                    <li class="list-group-item">Téléphone: <b><span id="pers_phone"></span></b></li>
-                                                </ul>                                
-                                            </div>
-                                    </div>
-                                    <!-- END PERSONNE CONTACT LIST GROUP -->
-                                    </div>
-                                    <div class="tab-pane" id="tab3">
-                                        <!-- PERSONNE CONTACT LIST GROUP -->
-                                        <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title"><b>Services offerts</b></h3>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <ul class="list-group border-bottom" id="service">
-                                                    
-                                                    </ul>                                
-                                                </div>
-                                        </div>
-                                        <!-- END PERSONNE CONTACT LIST GROUP -->
-                                    </div>                        
-                                </div>
-                            </div>                        
-                            <!-- END TABS WIDGET -->
-                    </div>
-                    <!-- END WIDGETS -->                    
+                            </div>                   
                     
                 </div>
                 <!-- END PAGE CONTENT WRAPPER -->                                

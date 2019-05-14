@@ -39,8 +39,8 @@
                                                                                         <td id="editable_<%= conf.id %>"><%= conf.value %></td>
                                                                                         <td>
                                                                                             <button class="btn btn-info" id="edit_<%= conf.id %>" onclick="makeEditable('<%= conf.id %>')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
-                                                                                            <button class="btn btn-success"id="save_<%= conf.id %>" onclick="saveEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-save"></span> Enregistrer</button>
-                                                                                            <button class="btn btn-warning" id="cancel_<%= conf.id %>" onclick="cancelEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-edit"></span> Annuler</button>
+                                                                                            <button class="btn btn-success"id="save_<%= conf.id %>" onclick="saveEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Enregistrer</button>
+                                                                                            <button class="btn btn-warning" id="cancel_<%= conf.id %>" onclick="cancelEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
                                                                                         </td>
                                                                                     </tr>
                                                                                 <% }) %> 

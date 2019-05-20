@@ -47,13 +47,14 @@ var toggleTable = () => {
 
 var loadDetails = (fosaCode) => {
 
+
   $('#selected_fosa').val(fosaCode);
 
   $("#waiting").show();
 
   loadHoraire(fosaCode);
 
-  loadResponsable(fosaCode);
+  loadContacts(fosaCode);
 
   loadService(fosaCode);
 
@@ -114,6 +115,8 @@ var loadTXNEW = (fosaCode) => {
 
 var loadHoraire = (fosaCode) => {
 
+  cancelHoraireEdit();
+
   $.ajax({
 
     url: '/getHoraire/'+fosaCode,
@@ -126,22 +129,23 @@ var loadHoraire = (fosaCode) => {
     },
     complete: function (data) {
 
-      let horaires=data.responseJSON;
+      let horaires=data.responseJSON[0];
 
       if(horaires){
-
-        horaires.forEach(hr =>{
-          $('#horaire').append('<li class="list-group-item">'+hr.jour+': <a href="#" onclick="makeEditable('+hr.id+');"><span id="'+hr.id+'">'+hr.heure+
-          '</span></a><a href="#" style="display:none;" id="save_"'+hr.id+'><span style="margin-left:3px;margin-right:3px;" class="glyphicon glyphicon-ok"></a>'+
-          '<a href="#" style="display:none;" id="cancel_"'+hr.id+'><span style="margin-left:3px;margin-right:3px;" class="glyphicon glyphicon-remove"></span></li></a>');
-        })
+        writeHoraire(horaires.jour);
       }
     }
   });
 }
 
 
-var loadResponsable = (fosaCode) => {
+var loadContacts = (fosaCode) => {
+
+  cancelContactEdit('RESP');
+
+  cancelContactEdit('RESP_ADJ');
+
+  cancelContactEdit('PERS_CONTACT');
 
   $.ajax({
 
@@ -184,9 +188,11 @@ var loadResponsable = (fosaCode) => {
 
 var loadService = (fosaCode) => {
 
+  cancelServiceEdit();
+
   $.ajax({
 
-    url: '/getService/'+fosaCode,
+    url: '/getServices/'+fosaCode,
     type: 'get',
 
     beforeSend: function () {
@@ -196,14 +202,13 @@ var loadService = (fosaCode) => {
     },
     complete: function (data) {
 
-      let services=data.responseJSON;
+      let services=data.responseJSON[0];
 
-      if(services){
+      servArr=services.nom.split(",");
 
-        services.forEach(serv =>{
-          $('#service_lbl').append('<b>'+serv.nom+'</b>');
-        })
-      }
+      servArr.forEach(serv =>{
+        $('#service_lbl').append('<li class="list-group-item"><b>'+serv+'</b></li>');
+      })  
     }
   });
 }
@@ -751,7 +756,7 @@ var editContact = (type) => {
 
   var contact_id = $('#'+type+'_contact_id').val();
 
-  var facility_id =$('#selected_fosa').val();
+  var facility_code =$('#selected_fosa').val();
 
   var nom=$('#'+type+'_nom').val();
 
@@ -778,26 +783,33 @@ var editContact = (type) => {
   if(contact_id > 0){
     
     url='/updateContact';
+
     data={
+
       contactID:contact_id,
+
       type:type_contact,
+
       nom:nom,
+
       fonction:fonction,
+
       telephone:telephone
     };
+
+    
     
   }else{
 
     url='/insertContact';
     data={
-      facilityID:facility_id,
+      facilityCode:facility_code,
       type:type_contact,
       nom:nom,
       fonction:fonction,
       telephone:telephone
     };
   }
-
   $.ajax({
 
     type: 'post',
@@ -818,21 +830,46 @@ var editContact = (type) => {
 
 var showServiceEdit = () => {
 
+  let value="";
+
+  $('#service_lbl').find('li').each(function(){
+
+    value+= $(this).text()+',';
+
+  });
+
   $('#show_service_edit').css('display','none');
 
   $('#save_service').css('display','');
 
   $('#cancel_service').css('display','');
 
-  var serv = $('#service_lbl').text();
+  //var serv = $('#service_lbl').text();
 
-  $('#service_lbl').html('<input type="text" class="form-control" id="service_input" value="'+serv+'">');
+  $('#service_lbl').html('<input type="text" class="form-control" id="service_input" value="'+value+'">');
   
 }
 
 var cancelServiceEdit = () => {
 
-  $('#service_lbl').html('<b>'+$('#service_input').val()+'</b>');
+  let services=$('#service_input').val();
+
+  if(services){
+
+    let servArr=services.split(",");
+
+    $('#service_lbl').empty();
+
+    servArr.forEach(serv =>{
+
+      if(serv.length > 0){
+
+        $('#service_lbl').append('<li class="list-group-item"><b>'+serv+'</b></li>');
+      }   
+    });  
+  }
+
+  //$('#service_lbl').html('<b>'+$('#service_input').val()+'</b>');
 
   $('#show_service_edit').css('display','');
 
@@ -870,3 +907,81 @@ var editService = () => {
   cancelServiceEdit();
 } 
 
+var showHoraireEdit = () =>{
+
+  var value="";
+
+  $('#horaire').find('li').each(function(){
+    value+= $(this).text()+',';
+  });
+
+  $('#div-horaire').html(`<input type="text" class="form-control" id="horaire_input" value="${value}">`); 
+
+  $('#show_horaire_edit').css('display','none');
+
+  $('#save_horaire').css('display','');
+
+  $('#cancel_horaire').css('display','');
+  
+}
+
+var cancelHoraireEdit = () =>{
+
+  $('#show_horaire_edit').css('display','');
+
+  $('#save_horaire').css('display','none');
+
+  $('#cancel_horaire').css('display','none');
+
+  var value=$('#horaire_input').val();
+
+  $('#div-horaire').html(`<ul class="list-group border-bottom" id="horaire"></ul>`);
+
+  writeHoraire(value);
+}
+
+var editHoraire = () =>{
+
+  var horaires = $('#horaire_input').val();
+
+  var fosa_code = $('#selected_fosa').val();
+
+  $.ajax({
+
+    type: 'post',
+
+    url: '/updateHoraires',
+
+    data:{
+
+      fosaCode:fosa_code,
+
+      horaires:horaires,
+    },
+
+    success: function(data){
+    },
+    error: function (data) {
+
+      let res=data;   
+    }
+  });
+  cancelHoraireEdit();
+}
+var writeHoraire = (value) =>{
+
+  let jours=[];
+
+  if(value){
+
+    jours=value.split(",");
+
+    jours.forEach(jour =>{
+
+      if(jour.length > 1){
+        $('#horaire').append('<li class="list-group-item">'+jour+'</li>');
+      }          
+    })
+  }
+  
+}

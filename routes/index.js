@@ -156,6 +156,23 @@ router.post('/updateConfig', function(req, res, next) {
     })
 });
 
+router.post('/insertContact', function(req, res, next) {
+  let facilityCode=req.body.facilityCode;
+  let type=req.body.type;
+  let noms=req.body.nom;
+  let fonction=req.body.fonction;
+  let telephone=req.body.telephone;
+
+  let sql=`INSERT INTO contact(code_facility,noms,fonction,telephone,type) VALUES("${facilityCode}",
+       "${noms}","${fonction}","${telephone}","${type}")`;
+
+  console.log(sql);
+
+  db.query(sql,function(error,data){                                                                                                                                                                                                                
+      if(error)throw error;
+  })
+});
+
 router.post('/updateContact', function(req, res, next) {
 
   let contactID=req.body.contactID;
@@ -341,7 +358,7 @@ router.get('/getHoraire/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
-  let sql="SELECT id,jour,heure FROM horaire WHERE code_facility='"+fosaCode+"'";
+  let sql=`SELECT code_facility AS code,jour FROM horaire WHERE code_facility="${fosaCode}"`;
 
   db.query(sql,function(error,data){
     
@@ -351,7 +368,7 @@ router.get('/getHoraire/:fosaCode', function(req,res,next){
   })
 });
 
-router.get('/getService/:fosaCode', function(req,res,next){
+router.get('/getServices/:fosaCode', function(req,res,next){
 
   let fosaCode=req.params.fosaCode;
 
@@ -371,8 +388,23 @@ router.post('/updateServices', function(req,res,next){
 
   let services = req.body.services;
 
-  let sql=`INSERT INTO service (code_facility, nom) VALUES ("${fosaCode}","${services}") 
-           ON DUPLICATE KEY UPDATE nom = "${services}"`;
+  db.query(`INSERT INTO service (code_facility, nom) VALUES ("${fosaCode}","${services}") 
+            ON DUPLICATE KEY UPDATE nom = "${services}"`,function(error,data){
+    
+    let resData=data;
+
+    res.json(resData);
+  })
+});
+
+router.post('/updateHoraires', function(req,res,next){
+
+  let fosaCode = req.body.fosaCode;
+
+  let horaires = req.body.horaires;
+
+  let sql=`INSERT INTO horaire (code_facility, jour) VALUES ("${fosaCode}","${horaires}") 
+           ON DUPLICATE KEY UPDATE jour = "${horaires}"`;
 
   db.query(sql,function(error,data){
     

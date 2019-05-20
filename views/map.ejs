@@ -144,20 +144,21 @@
                                                 <h3 class="panel-title"><b>Horaire de travail</b></h3>
                                             </div>
                                             <div class="panel-body">
-                                                <ul class="list-group border-bottom" id="horaire">
-                                                    
-                                                </ul>
+                                                <div id="div-horaire">
+                                                    <ul class="list-group border-bottom" id="horaire"></ul>
+                                                </div>
+                                                
                                                 <br>
-                                                <button class="btn btn-success" id="show_info_horaire_edit" onclick="showInfoHoraireEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <button class="btn btn-success" id="show_horaire_edit" onclick="showHoraireEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
                                                 <table>
                                                     <tr>
                                                         <td style="padding-top:5px;padding-right:2px;">
-                                                            <button class="btn btn-success" id="save_info_horaire" style="display: none;">
+                                                            <button class="btn btn-success" id="save_horaire" onclick="editHoraire()" style="display: none;">
                                                                 <span class="glyphicon glyphicon-ok"></span> Enregistrer
                                                             </button>
                                                         </td>
                                                         <td style="padding-top:5px;padding-right:2px;">
-                                                            <button class="btn btn-warning" id="cancel_info_horaire" onclick="cancelInfoHoraireEdit()" style="display:none;">
+                                                            <button class="btn btn-warning" id="cancel_horaire" onclick="cancelHoraireEdit()" style="display:none;">
                                                                 <span class="glyphicon glyphicon-remove"></span> Annuler
                                                             </button>
                                                         </td>
@@ -269,8 +270,8 @@
                                                     <h3 class="panel-title"><b>Services VIH offerts</b></h3>
                                                 </div>
                                                 <div class="panel-body">
-                                                    <ul class="list-group border-bottom">
-                                                        <li class="list-group-item"><span id="service_lbl"></span></li>
+                                                    <ul class="list-group border-bottom" id="service_lbl" >
+                                                         <!--<li class="list-group-item"><span id="service_lbl"></span></li>-->
                                                     </ul>
                                                     <br>
                                                     <button class="btn btn-success" id="show_service_edit"  onclick="showServiceEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>

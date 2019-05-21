@@ -79,6 +79,8 @@ var loadDetails = (fosaCode) => {
       if(facilities){
 
         facilities.forEach(fosa =>{
+
+          $("#selected_title").text(fosa.facility);
           $('#cn_province').text(fosa.province);
           $('#cn_zone').text(fosa.zone);
           $('#cn_adresse').text(fosa.adresse);
@@ -204,11 +206,16 @@ var loadService = (fosaCode) => {
 
       let services=data.responseJSON[0];
 
-      servArr=services.nom.split(",");
+      if(services){
 
-      servArr.forEach(serv =>{
-        $('#service_lbl').append('<li class="list-group-item"><b>'+serv+'</b></li>');
-      })  
+        servArr=services.nom.split(",");
+
+        servArr.forEach(serv =>{
+          $('#service_lbl').append('<li class="list-group-item"><b>'+serv+'</b></li>');
+        }) 
+      }else{
+        $('#service_lbl').append('<li class="list-group-item"></li>');
+      } 
     }
   });
 }

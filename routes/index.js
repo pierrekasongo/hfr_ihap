@@ -238,8 +238,12 @@ router.post('/login',function(req,res,next){
 
     let value=JSON.stringify(data[0]);
 
-    let logedinUser=JSON.parse(value).username;
+    let logedinUser="";
 
+    if(value){
+
+      logedinUser=JSON.parse(value).username;
+    }
     if(logedinUser == ""){
 
       res.redirect("/login");

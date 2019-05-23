@@ -36,7 +36,8 @@
                                                                                 <% configs.forEach(function(conf){ %>
                                                                                     <tr>
                                                                                         <td id="editable_param_<%= conf.id %>"><%= conf.param %></td>
-                                                                                        <td id="editable_<%= conf.id %>"><%= conf.value %></td>
+                        
+                                                                                        <td id="editable_<%= conf.id %>"><%= (conf.param == "DHIS2_USER_PASSWORD")?"*****":conf.value %></td>
                                                                                         <td>
                                                                                             <button class="btn btn-info" id="edit_<%= conf.id %>" onclick="makeEditable('<%= conf.id %>')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
                                                                                             <button class="btn btn-success"id="save_<%= conf.id %>" onclick="saveEdition('<%= conf.id %>')" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Enregistrer</button>

@@ -125,7 +125,9 @@
                                                         </li>
                                                     </ul>
                                                     <br>
-                                                    <button class="btn btn-success" id="show_info_base_edit" onclick="showInfoBaseEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <% if (username) { %> 
+                                                        <button class="btn btn-success" id="show_info_base_edit" onclick="showInfoBaseEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <% } %>
                                                     <table>
                                                         <tr>
                                                             <td style="padding-top:5px;padding-right:2px;">
@@ -154,7 +156,10 @@
                                                 </div>
                                                 
                                                 <br>
-                                                <button class="btn btn-success" id="show_horaire_edit" onclick="showHoraireEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <% if (username) { %> 
+                                                    <button class="btn btn-success" id="show_horaire_edit" onclick="showHoraireEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <% } %>
+                                                
                                                 <table>
                                                     <tr>
                                                         <td style="padding-top:5px;padding-right:2px;">
@@ -189,7 +194,11 @@
                                                         <li class="list-group-item">Téléphone: <b><span id="cn_resp_phone"></span></b></li>
                             
                                                     </ul>
-                                                    <button class="btn btn-success" id="show_contact_resp_edit" onclick="showContactEdit('resp')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <br>
+                                                    <% if (username) { %> 
+                                                        <button class="btn btn-success" id="show_contact_resp_edit" onclick="showContactEdit('resp')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <% } %>
+                                                    
                                                     <table>
                                                         <tr>
                                                             <td style="padding-top:5px;padding-right:2px;">
@@ -219,7 +228,11 @@
                                                         <li class="list-group-item">Fonction: <b><span id="cn_resp_ad_fonction"></span></b></li>
                                                         <li class="list-group-item">Téléphone: <b><span id="cn_resp_ad_phone"></span></b></li>
                                                 </ul>
-                                                <button class="btn btn-success" id="show_contact_resp_ad_edit"  onclick="showContactEdit('resp_ad')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <br>
+                                                <% if (username) { %> 
+                                                    <button class="btn btn-success" id="show_contact_resp_ad_edit"  onclick="showContactEdit('resp_ad')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <% } %>
+                                                
                                                     <table>
                                                         <tr>
                                                             <td style="padding-top:5px;padding-right:2px;">
@@ -249,7 +262,10 @@
                                                     <li class="list-group-item">Fonction: <b><span id="cn_pers_fonction"></span></b></li>
                                                     <li class="list-group-item">Téléphone: <b><span id="cn_pers_phone"></span></b></li>
                                                 </ul>
-                                                <button class="btn btn-success" id="show_contact_pers_edit"  onclick="showContactEdit('pers')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <br>
+                                                <% if(username){ %>
+                                                    <button class="btn btn-success" id="show_contact_pers_edit"  onclick="showContactEdit('pers')"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                <% } %>
                                                     <table>
                                                         <tr>
                                                             <td style="padding-top:5px;padding-right:2px;">
@@ -279,7 +295,10 @@
                                                          <!--<li class="list-group-item"><span id="service_lbl"></span></li>-->
                                                     </ul>
                                                     <br>
-                                                    <button class="btn btn-success" id="show_service_edit"  onclick="showServiceEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <% if(username){ %>
+                                                        <button class="btn btn-success" id="show_service_edit"  onclick="showServiceEdit()"><span class="glyphicon glyphicon-edit"></span> Editer</button>
+                                                    <% } %>
+                                                    
                                                     <table>
                                                         <tr>
                                                             <td style="padding-top:5px;padding-right:2px;">
